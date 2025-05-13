@@ -139,27 +139,28 @@ const ViewAllButton = styled(motion.a)`
 `;
 
 // Örnek veri
+// Bu kısmı bulun ve değiştirin:
 const featuredDishes = [
   {
     id: 1,
-    title: "Karışık Kebap",
-    description: "Adana, kuzu şiş ve tavuk şişin muhteşem uyumu. Közde pişirilmiş sebzeler ve özel baharatlarla...",
-    price: "160 TL",
-    image: "/images/karisik-kebap.jpg"
+    title: "Fırın Kebabı",
+    description: "1851'den beri aynı taş fırında pişen eşsiz lezzetimiz. Kuzu etinin yanına yerleştirilen Urfa biberli, sarımsaklı patateslerle beraber 6 saatte pişen muhteşem bir deneyim.",
+    price: "180 TL",
+    image: "/images/firin-kebabi.jpg"
   },
   {
     id: 2,
-    title: "Kadir Usta'nın Özel Adana Kebabı",
-    description: "El yapımı, özel baharatlarla hazırlanan, tam kıvamında közde pişirilen geleneksel lezzet.",
-    price: "140 TL",
-    image: "/images/adana-kebap.jpg"
+    title: "Kabine Pilavı", 
+    description: "Büyük annemiz Fatma Hanım'ın 1920'lerden kalma özel tarifi. İçindeki ceviz, üzüm, badem ve özel baharat karışımı ile sanatın en güzel hali. Sadece aile geleneği olarak aktarılan gizli tarif.",
+    price: "85 TL",
+    image: "/images/kabine-pilavi.jpg"
   },
   {
     id: 3,
-    title: "Kuzu Fıstıklı Beyti",
-    description: "İnce kıyılmış kuzu eti, Antep fıstığı, tereyağı ve özel soslarla servis edilen özel tarif.",
-    price: "180 TL",
-    image: "/images/beyti-kebap.jpg"
+    title: "Diyarbakır Usulü İçli Köfte",
+    description: "Hüseyin Usta'nın özel su testi yöntemiyle hazırlanan, bugday ve kırmızı mercimek karışımından oluşan, içi özenle hazırlanmış dana etiyle doldurulmuş geleneksel lezzetimiz.",
+    price: "35 TL (adet)",
+    image: "/images/icli-kofte.jpg"
   }
 ];
 

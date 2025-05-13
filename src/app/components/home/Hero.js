@@ -215,7 +215,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          Kadir Ustanın Mirası, Sofranızda
+          1851den Beri, Nesilden Nesile Aktarılan Lezzet
         </HeroSubtitle>
         
         <HeroButtons

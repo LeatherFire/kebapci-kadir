@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from '../../styles/theme';
 import Image from 'next/image';
-import { FiDownload } from 'react-icons/fi';
+import { FiDownload, FiClock, FiFlame, FiDroplet } from 'react-icons/fi';
 
 const PageContainer = styled.div`
   padding-top: 80px; // Headerın altında kalmaması için
@@ -64,27 +64,6 @@ const MenuSection = styled.section`
   }
 `;
 
-const DownloadPdfButton = styled.a`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: ${theme.colors.secondary.anthracite};
-  color: ${theme.colors.text.light};
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  font-family: ${theme.typography.fontFamily.heading};
-  font-weight: ${theme.typography.fontWeight.medium};
-  margin: 0 auto 3rem;
-  width: fit-content;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  
-  &:hover {
-    background-color: ${theme.colors.primary.red};
-  }
-`;
-
 const CategoryTabs = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -128,7 +107,7 @@ const MenuItem = styled(motion.div)`
   display: flex;
   gap: 1.5rem;
   background-color: ${theme.colors.background.main};
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
@@ -141,15 +120,15 @@ const MenuItem = styled(motion.div)`
 
 const MenuItemImageContainer = styled.div`
   flex-shrink: 0;
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   position: relative;
   border-radius: 50%;
   overflow: hidden;
   
   ${theme.media.md} {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
   }
 `;
 
@@ -160,22 +139,24 @@ const MenuItemContent = styled.div`
 const MenuItemHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
+  align-items: start;
+  margin-bottom: 1rem;
 `;
 
 const MenuItemTitle = styled.h3`
   font-family: ${theme.typography.fontFamily.heading};
   font-weight: ${theme.typography.fontWeight.semibold};
-  font-size: ${theme.typography.fontSize.lg};
+  font-size: ${theme.typography.fontSize.xl};
   color: ${theme.colors.text.dark};
 `;
 
-const MenuItemPrice = styled.span`
-  font-family: ${theme.typography.fontFamily.accent};
+const SpecialBadge = styled.span`
+  background-color: ${theme.colors.primary.red};
+  color: ${theme.colors.text.light};
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: ${theme.typography.fontSize.sm};
   font-weight: ${theme.typography.fontWeight.medium};
-  font-size: ${theme.typography.fontSize.lg};
-  color: ${theme.colors.primary.red};
 `;
 
 const MenuItemDescription = styled.p`
@@ -183,6 +164,49 @@ const MenuItemDescription = styled.p`
   font-size: ${theme.typography.fontSize.base};
   color: ${theme.colors.text.muted};
   line-height: 1.6;
+  margin-bottom: 1rem;
+`;
+
+const MenuItemFeatures = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+const FeatureItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: ${theme.typography.fontSize.sm};
+  color: ${theme.colors.text.dark};
+  background-color: ${theme.colors.secondary.offwhite};
+  padding: 0.5rem;
+  border-radius: 6px;
+  
+  svg {
+    color: ${theme.colors.primary.red};
+  }
+`;
+
+const MenuItemFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const MenuItemPrice = styled.span`
+  font-family: ${theme.typography.fontFamily.accent};
+  font-weight: ${theme.typography.fontWeight.bold};
+  font-size: ${theme.typography.fontSize.xl};
+  color: ${theme.colors.primary.red};
+`;
+
+const MenuItemOrigin = styled.p`
+  font-family: ${theme.typography.fontFamily.body};
+  font-size: ${theme.typography.fontSize.sm};
+  color: ${theme.colors.primary.orange};
+  font-style: italic;
 `;
 
 const NoItemsMessage = styled.p`
@@ -193,86 +217,81 @@ const NoItemsMessage = styled.p`
   margin: 3rem 0;
 `;
 
-// Örnek menü verileri
-const menuCategories = [
-  { id: 'all', name: 'Tümü' },
-  { id: 'starters', name: 'Başlangıçlar' },
-  { id: 'kebabs', name: 'Kebaplar' },
-  { id: 'grills', name: 'Izgaralar' },
-  { id: 'sides', name: 'Yan Lezzetler' },
-  { id: 'desserts', name: 'Tatlılar' },
-  { id: 'drinks', name: 'İçecekler' }
-];
-
-const menuItems = [
-  {
-    id: 1,
-    title: 'Humus',
-    description: 'Ev yapımı, tahin ve zeytinyağı ile servis edilen geleneksel humus.',
-    price: '45 TL',
-    category: 'starters',
-    image: '/images/humus.jpg'
-  },
-  {
-    id: 2,
-    title: 'Muhammara',
-    description: 'Közlenmiş kırmızı biber, ceviz ve özel baharatlarla harmanlanmış geleneksel meze.',
-    price: '50 TL',
-    category: 'starters',
-    image: '/images/muhammara.jpg'
-  },
-  {
-    id: 3,
-    title: 'Adana Kebap',
-    description: 'El yapımı, özel baharatlarla hazırlanan, közde pişirilmiş geleneksel lezzet.',
-    price: '140 TL',
-    category: 'kebabs',
-    image: '/images/adana-kebap.jpg'
-  },
-  {
-    id: 4,
-    title: 'Urfa Kebap',
-    description: 'Acısız, sadece taze baharatlarla harmanlanmış, közde pişirilmiş yumuşacık kebap.',
-    price: '140 TL',
-    category: 'kebabs',
-    image: '/images/urfa-kebap.jpg'
-  },
-  {
-    id: 5,
-    title: 'Kuzu Şiş',
-    description: 'Özel marine edilmiş kuzu eti, közde pişirilmiş sebzeler eşliğinde.',
-    price: '160 TL',
-    category: 'grills',
-    image: '/images/kuzu-sis.jpg'
-  },
-  {
-    id: 6,
-    title: 'Kadir Usta\'nın Özel Karışık Kebabı',
-    description: 'Adana, Urfa, kuzu şiş ve tavuk şişin muhteşem uyumu. Közde pişirilmiş sebzeler ve özel soslarla...',
-    price: '190 TL',
-    category: 'kebabs',
-    image: '/images/karisik-kebap.jpg'
-  },
-  {
-    id: 7,
-    title: 'Künefe',
-    description: 'Hatay peyniri ile hazırlanmış, sıcak servis edilen geleneksel künefe tatlısı.',
-    price: '70 TL',
-    category: 'desserts',
-    image: '/images/kunefe.jpg'
-  },
-  {
-    id: 8,
-    title: 'Katmer',
-    description: 'Antep fıstığı ile zenginleştirilmiş, ince hamurlu geleneksel tatlı.',
-    price: '65 TL',
-    category: 'desserts',
-    image: '/images/katmer.jpg'
-  }
-];
-
 export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState('all');
+  
+  // PDF bilgilerine göre güncellenmiş menü verileri
+  const menuCategories = [
+    { id: 'all', name: 'Tümü' },
+    { id: 'signature', name: 'Özel Lezzetler' },
+    { id: 'kebabs', name: 'Kebaplar' },
+    { id: 'rice', name: 'Pilavlar' },
+    { id: 'desserts', name: 'Tatlılar' },
+    { id: 'drinks', name: 'İçecekler' }
+  ];
+
+  const menuItems = [
+    {
+      id: 1,
+      title: 'Isparta Fırın Kebabı',
+      description: 'Doğal ortamlarında yetişen hayvanlardan hijyenik koşullarda hazırlanan et, 3-3.5 saat çalı kökü odunuyla pişirilir. 2 saat alev, 1 saat korda pişirilen, buharla %50 fire veren özel kebap.',
+      price: '85 TL',
+      category: 'signature',
+      image: '/images/isparta-kebap.jpg',
+      special: '1851\'den Beri',
+      origin: 'Hafız Dede\'nin Özel Tarifi'
+    },
+    {
+      id: 2,
+      title: 'Kabune Pilavı',
+      description: 'Dolgun pirinç, tatlı soğan, karabiber ve nohut ile kuzu kaburga eti. Saç ayağında üzüm asması çırpısıyla 15 dakikada pişirilen geleneksel pilav. "Gelin Bu Ne" efsanesinden doğan tarih.',
+      price: '35 TL',
+      category: 'rice',
+      image: '/images/kabune-pilavi.jpg',
+      special: 'Geleneksel',
+      origin: 'GIBUNE > KABUNE Hikayesi'
+    },
+    {
+      id: 3,
+      title: 'İrmik Helvası',
+      description: 'O numara sarı irmik, hakiki tereyağı ve kunar (Antep) fıstığıyla büyük bakır kazanlarda mangal kömürü ateşinde özenerek pişirilen geleneksel helva.',
+      price: '25 TL',
+      category: 'desserts',
+      image: '/images/irmik-helvasi.jpg',
+      special: 'Özel Tarif',
+      origin: 'Bakır Kazan Usulü'
+    },
+    {
+      id: 4,
+      title: 'Üzüm Şırası',
+      description: 'Isparta\'nın siyah Dimlit üzümü kurutularak, mersin yaprağı, karanfil ve tatlı kabuk ile kaynatılır. Kebabın yanında tercih edilme sebebi besin değeri ve protein-glikoz dengesi.',
+      price: '18 TL',
+      category: 'drinks',
+      image: '/images/uzum-sirasi.jpg',
+      special: 'Sağlık Deposu',
+      origin: 'Beyin Hücresi Yenileyici'
+    },
+    {
+      id: 5,
+      title: 'Adana Kebap',
+      description: 'Geleneksel baharatlarla marine edilmiş, el ile yoğurulmuş kıyma ile hazırlanan, ateşte pişirilen klasik lezzet.',
+      price: '40 TL',
+      category: 'kebabs',
+      image: '/images/adana-kebap.jpg',
+      special: 'Klasik',
+      origin: 'Geleneksel Tarif'
+    },
+    {
+      id: 6,
+      title: 'Urfa Kebap',
+      description: 'Acısız baharatlarla hazırlanan, yumuşak kıvamda pişirilen, kömür ateşinde lezzetlendirilen kebap.',
+      price: '40 TL',
+      category: 'kebabs',
+      image: '/images/urfa-kebap.jpg',
+      special: 'Yumuşak',
+      origin: 'Urfa Usulü'
+    }
+  ];
   
   const filteredItems = activeCategory === 'all' 
     ? menuItems 
@@ -283,12 +302,11 @@ export default function MenuPage() {
       <HeroSection>
         <HeroContent>
           <PageTitle>Menümüz</PageTitle>
-          <PageDescription>Kadir Ustanın özenle hazırladığı, yılların tecrübesiyle harmanlanmış eşsiz lezzetler.</PageDescription>
+          <PageDescription>1851'den beri süren gelenekle, Isparta'nın eşsiz lezzetlerini sofranıza getiriyoruz.</PageDescription>
         </HeroContent>
       </HeroSection>
       
       <MenuSection>
-        
         <CategoryTabs>
           {menuCategories.map(category => (
             <CategoryTab
@@ -329,9 +347,15 @@ export default function MenuPage() {
                   <MenuItemContent>
                     <MenuItemHeader>
                       <MenuItemTitle>{item.title}</MenuItemTitle>
-                      <MenuItemPrice>{item.price}</MenuItemPrice>
+                      {item.special && <SpecialBadge>{item.special}</SpecialBadge>}
                     </MenuItemHeader>
                     <MenuItemDescription>{item.description}</MenuItemDescription>
+                    <MenuItemFooter>
+                      <MenuItemPrice>{item.price}</MenuItemPrice>
+                    </MenuItemFooter>
+                    {item.origin && (
+                      <MenuItemOrigin>{item.origin}</MenuItemOrigin>
+                    )}
                   </MenuItemContent>
                 </MenuItem>
               ))}

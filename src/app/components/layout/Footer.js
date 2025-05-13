@@ -177,7 +177,7 @@ const Footer = () => {
             Kebapçı <span>Kadir</span>
           </FooterLogo>
           <FooterDescription>
-            Geleneksel kebap kültürünü modern bir anlayışla sunan, yılların tecrübesiyle harmanlanmış eşsiz lezzetler...
+            1851'den beri İsparta'da geleneksel kebap kültürünü modern anlayışla sunan, yılların tecrübesiyle harmanlanmış eşsiz lezzetler.
           </FooterDescription>
           <SocialLinks>
             <SocialLink href="https://facebook.com" target="_blank" rel="noopener noreferrer">
@@ -198,21 +198,27 @@ const Footer = () => {
             <FooterContactIcon>
               <FiPhone />
             </FooterContactIcon>
-            <FooterContactText>+90 324 123 45 67</FooterContactText>
+            <FooterContactText>
+              +90 246 218 24 60<br />
+              +90 246 212 17 71
+            </FooterContactText>
           </FooterContactItem>
           <FooterContactItem>
             <FooterContactIcon>
               <FiMail />
             </FooterContactIcon>
-            <FooterContactText>info@kebapcikadir.com</FooterContactText>
+            <FooterContactText>
+              info@kebapcikadir.com.tr
+            </FooterContactText>
           </FooterContactItem>
           <FooterContactItem>
             <FooterContactIcon>
               <FiMapPin />
             </FooterContactIcon>
             <FooterContactText>
-              Merkez Mahallesi, Atatürk Caddesi No: 123<br />
-              Mersin / Türkiye
+              Ulucami Yanı Valilik Arkası<br />
+              Kebapçılar Arastası No: 8<br />
+              ISPARTA / TÜRKİYE
             </FooterContactText>
           </FooterContactItem>
           <FooterContactItem>
@@ -220,7 +226,8 @@ const Footer = () => {
               <FiClock />
             </FooterContactIcon>
             <FooterContactText>
-              Pazartesi - Pazar: 11:00 - 23:00
+              Pazartesi - Pazar: 11:00 - 23:00<br />
+              (Mutfak kapanış: 22:30)
             </FooterContactText>
           </FooterContactItem>
         </FooterColumn>
@@ -249,16 +256,16 @@ const Footer = () => {
         <FooterColumn>
           <FooterTitle>Çalışma Saatleri</FooterTitle>
           <FooterContactText>
-            <strong>Pazartesi - Cuma:</strong><br />
-            11:00 - 15:00 / 17:00 - 23:00
-          </FooterContactText>
-          <FooterContactText>
-            <strong>Cumartesi - Pazar:</strong><br />
+            <strong>Pazartesi - Pazar:</strong><br />
             11:00 - 23:00
           </FooterContactText>
-          <FooterContactText>
+          <FooterContactText style={{ marginTop: '1rem' }}>
             <strong>Mutfak Kapanış:</strong><br />
             22:30
+          </FooterContactText>
+          <FooterContactText style={{ marginTop: '1rem' }}>
+            <strong>Web:</strong><br />
+            www.kebapcikadir.com.tr
           </FooterContactText>
         </FooterColumn>
       </FooterContent>

@@ -324,7 +324,10 @@ export default function ContactPage() {
               </ContactIcon>
               <ContactText>
                 <ContactLabel>Telefon</ContactLabel>
-                <ContactDetail>+90 324 123 45 67</ContactDetail>
+                <ContactDetail>
+                  +90 246 218 24 60<br />
+                  +90 246 212 17 71
+                </ContactDetail>
               </ContactText>
             </ContactItem>
             
@@ -334,7 +337,7 @@ export default function ContactPage() {
               </ContactIcon>
               <ContactText>
                 <ContactLabel>E-posta</ContactLabel>
-                <ContactDetail>info@kebapcikadir.com</ContactDetail>
+                <ContactDetail>info@kebapcikadir.com.tr</ContactDetail>
               </ContactText>
             </ContactItem>
             
@@ -345,8 +348,9 @@ export default function ContactPage() {
               <ContactText>
                 <ContactLabel>Adres</ContactLabel>
                 <ContactDetail>
-                  Merkez Mahallesi, Atatürk Caddesi No: 123<br />
-                  Mersin / Türkiye
+                  Ulucami Yanı Valilik Arkası<br />
+                  Kebapçılar Arastası No: 8<br />
+                  ISPARTA / TÜRKİYE
                 </ContactDetail>
               </ContactText>
             </ContactItem>
@@ -366,7 +370,7 @@ export default function ContactPage() {
             
             <MapContainer>
               <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3246.0564553727237!2d34.6105493768222!3d36.78939867138364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1527f4a4c0be6729%3A0xac6e03ac21e75c68!2sMersin%2C%20Merkez%2FMersin%2C%20T%C3%BCrkiye!5e0!3m2!1str!2str!4v1683145876428!5m2!1str!2str" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3192.3857167837535!2d30.52834911516745!3d37.76736297975916!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14c2f0b6823b8d3b%3A0x8b2c2d8b5e7f6a8c!2sUlucami%2C%20Kebap%C3%A7%C4%B1lar%20Arasta%20Sokak%20No%3A8%2C%2032100%20Merkez%2FIsparta%2C%20T%C3%BCrkiye!5e0!3m2!1str!2str!4v1635678901234!5m2!1str!2str" 
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 
@@ -449,6 +453,8 @@ export default function ContactPage() {
                     <option value="13:00">13:00</option>
                     <option value="13:30">13:30</option>
                     <option value="14:00">14:00</option>
+                    <option value="14:30">14:30</option>
+                    <option value="15:00">15:00</option>
                     <option value="18:00">18:00</option>
                     <option value="18:30">18:30</option>
                     <option value="19:00">19:00</option>
@@ -456,6 +462,8 @@ export default function ContactPage() {
                     <option value="20:00">20:00</option>
                     <option value="20:30">20:30</option>
                     <option value="21:00">21:00</option>
+                    <option value="21:30">21:30</option>
+                    <option value="22:00">22:00</option>
                   </Select>
                 </FormGroup>
               </FormRow>
@@ -489,6 +497,7 @@ export default function ContactPage() {
                   name="message" 
                   value={formData.message}
                   onChange={handleChange}
+                  placeholder="Özel gün kutlaması, alerji durumu, masa tercihi gibi özel isteklerinizi belirtebilirsiniz..."
                 ></Textarea>
               </FormGroup>
               

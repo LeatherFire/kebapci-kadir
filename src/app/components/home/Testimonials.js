@@ -5,12 +5,17 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { theme } from '../../styles/theme';
-import { FiChevronLeft, FiChevronRight, FiStar } from 'react-icons/fi';
+import { FiChevronLeft, FiChevronRight, FiStar, FiMapPin, FiCalendar } from 'react-icons/fi';
 import Image from 'next/image';
 
 const SectionContainer = styled.section`
   padding: 5rem 1rem;
-  background-color: ${theme.colors.background.main};
+  background: linear-gradient(180deg, 
+    ${theme.colors.background.main} 0%, 
+    ${theme.colors.secondary.offwhite} 50%,
+    ${theme.colors.background.main} 100%
+  );
+  position: relative;
   
   ${theme.media.md} {
     padding: 6rem 2rem;
@@ -21,9 +26,22 @@ const SectionContainer = styled.section`
   }
 `;
 
+const BackgroundPattern = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C82C1B' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+  z-index: 0;
+`;
+
 const SectionHeader = styled.div`
   text-align: center;
   margin-bottom: 4rem;
+  position: relative;
+  z-index: 1;
 `;
 
 const SectionTitle = styled(motion.h2)`
@@ -47,10 +65,20 @@ const SectionTitle = styled(motion.h2)`
   }
 `;
 
+const SectionSubtitle = styled(motion.p)`
+  font-family: ${theme.typography.fontFamily.body};
+  font-size: ${theme.typography.fontSize.lg};
+  color: ${theme.colors.text.muted};
+  max-width: 700px;
+  margin: 2rem auto 0;
+  line-height: 1.8;
+`;
+
 const SliderContainer = styled(motion.div)`
   position: relative;
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
+  z-index: 1;
 `;
 
 const TestimonialSlider = styled.div`
@@ -69,17 +97,42 @@ const TestimonialSlide = styled.div`
 `;
 
 const TestimonialCard = styled.div`
-  background-color: ${theme.colors.background.alt};
-  border-radius: 8px;
+  background-color: ${theme.colors.background.main};
+  border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   height: 100%;
+  position: relative;
+  overflow: hidden;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, 
+      ${theme.colors.primary.red}, 
+      ${theme.colors.primary.orange}
+    );
+  }
 `;
 
 const TestimonialContent = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+`;
+
+const QuoteMarkContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 4rem;
+  color: ${theme.colors.primary.red};
+  opacity: 0.1;
+  font-family: ${theme.typography.fontFamily.accent};
 `;
 
 const TestimonialQuote = styled.p`
@@ -89,50 +142,37 @@ const TestimonialQuote = styled.p`
   line-height: 1.8;
   margin-bottom: 2rem;
   font-style: italic;
-  position: relative;
   flex-grow: 1;
   
-  &:before, &:after {
-    content: '"';
-    font-family: ${theme.typography.fontFamily.accent};
-    font-size: 2.5rem;
-    color: ${theme.colors.primary.red};
-    position: absolute;
-    opacity: 0.3;
-  }
-  
-  &:before {
-    top: -1.5rem;
-    left: -0.5rem;
-  }
-  
-  &:after {
-    bottom: -2.5rem;
-    right: -0.5rem;
+  ${theme.media.md} {
+    font-size: ${theme.typography.fontSize.xl};
   }
 `;
 
 const TestimonialStars = styled.div`
   display: flex;
+  gap: 0.25rem;
   color: ${theme.colors.primary.yellow};
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
 `;
 
 const TestimonialFooter = styled.div`
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto 1fr;
   gap: 1rem;
+  align-items: center;
   margin-top: auto;
 `;
 
 const TestimonialImageContainer = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   overflow: hidden;
   position: relative;
-  flex-shrink: 0;
+  border: 3px solid ${theme.colors.primary.orange};
+  box-shadow: 0 0 0 3px ${theme.colors.secondary.beige};
 `;
 
 const TestimonialAuthor = styled.div``;
@@ -140,53 +180,74 @@ const TestimonialAuthor = styled.div``;
 const TestimonialName = styled.h4`
   font-family: ${theme.typography.fontFamily.heading};
   font-weight: ${theme.typography.fontWeight.semibold};
-  font-size: ${theme.typography.fontSize.base};
+  font-size: ${theme.typography.fontSize.lg};
   color: ${theme.colors.text.dark};
+  margin-bottom: 0.25rem;
+`;
+
+const TestimonialInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 `;
 
 const TestimonialRole = styled.p`
   font-family: ${theme.typography.fontFamily.body};
-  font-size: ${theme.typography.fontSize.sm};
+  font-size: ${theme.typography.fontSize.base};
   color: ${theme.colors.text.muted};
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const TestimonialDate = styled.p`
+  font-family: ${theme.typography.fontFamily.body};
+  font-size: ${theme.typography.fontSize.sm};
+  color: ${theme.colors.primary.orange};
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 const SliderButton = styled.button`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background-color: ${theme.colors.background.main};
-  border: 1px solid ${theme.colors.secondary.beige};
+  border: 2px solid ${theme.colors.secondary.beige};
   color: ${theme.colors.text.dark};
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   cursor: pointer;
   z-index: 2;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   
   &:hover {
     background-color: ${theme.colors.primary.red};
     color: ${theme.colors.text.light};
     border-color: ${theme.colors.primary.red};
+    transform: translateY(-50%) scale(1.1);
   }
   
   ${({ direction }) => direction === 'left' && `
-    left: -20px;
+    left: -25px;
     
     ${theme.media.md} {
-      left: -50px;
+      left: -60px;
     }
   `}
   
   ${({ direction }) => direction === 'right' && `
-    right: -20px;
+    right: -25px;
     
     ${theme.media.md} {
-      right: -50px;
+      right: -60px;
     }
   `}
 `;
@@ -194,49 +255,89 @@ const SliderButton = styled.button`
 const SliderDots = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
-  gap: 0.5rem;
+  margin-top: 2.5rem;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
 `;
 
 const SliderDot = styled.button`
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: ${props => props.active ? theme.colors.primary.red : theme.colors.secondary.beige};
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
   
   &:hover {
-    background-color: ${props => props.active ? theme.colors.primary.red : theme.colors.secondary.anthracite};
+    background-color: ${props => props.active ? theme.colors.primary.red : theme.colors.primary.orange};
+    transform: scale(1.2);
   }
+  
+  ${props => props.active && `
+    &:after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border: 2px solid ${theme.colors.primary.red};
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(1.2); }
+      100% { opacity: 0.7; transform: scale(1); }
+    }
+  `}
 `;
 
-// Örnek müşteri yorumları
+// Güncellenmiş müşteri yorumları - Isparta kebabı ve yerel kültürü yansıtan
 const testimonials = [
   {
     id: 1,
-    quote: "Mersin'de yaşadığım 15 yıl boyunca keşfettiğim en iyi kebapçı. Kadir Usta'nın ellerinden çıkan Adana kebap, gerçekten memleket lezzetini yansıtıyor. Ailece sık sık gidiyoruz.",
-    author: "Mustafa Yıldırım",
-    role: "Yerel Müşteri",
+    quote: "1851'den beri süren bu gelenek, sadece Isparta'da yaşanabilecek bir deneyim. Fırın kebabının o eşsiz lezzeti, üzüm şırasıyla perfect uyum... Büyüklerimin anlattığı tadın aynısını buldum burada.",
+    author: "Prof. Dr. Mehmet Yılmaz",
+    role: "Isparta Doğumlu",
+    location: "Isparta",
     avatar: "/images/testimonial-1.jpg",
-    stars: 5
+    stars: 5,
+    date: "Aralık 2023"
   },
   {
     id: 2,
-    quote: "İş seyahatim için geldiğim Mersin'de tesadüfen keşfettim ve harika bir sürpriz oldu. Beyti kebabı muhteşemdi. Atmosfer çok samimi, servis hızlı. Tekrar Mersin'e geldiğimde kesinlikle ziyaret edeceğim.",
-    author: "Zeynep Kaya",
-    role: "İş İnsanı",
+    quote: "Isparta'ya iş için geldim ama Kebapçı Kadir'i keşfettiğimde şehri tekrar ziyaret etmek için bahane aramaya başladım. O çalı kökü kokusu, közde pişen etlerin sesi... Unutulmaz bir deneyim.",
+    author: "Ayşe Demir",
+    role: "İstanbul Sakini",
+    location: "İstanbul → Isparta",
     avatar: "/images/testimonial-2.jpg",
-    stars: 5
+    stars: 5,
+    date: "Ocak 2024"
   },
   {
     id: 3,
-    quote: "Antep'ten geliyorum ve kebap konusunda oldukça seçiciyim. Kebapçı Kadir'in lezzetleri beni çok etkiledi. Özellikle kuzu şiş ve katmer tatlısı favorilerim oldu. Kesinlikle tavsiye ederim!",
-    author: "Ahmet Demir",
-    role: "Gurme",
+    quote: "Hafız Dede'nin döneminden kalma o otantik tarif, Hüseyin Usta'nın ellerinde yeniden hayat buluyor. Gül şehrinin bu saklı cevheri, gerçek bir lezzet hazinesi.",
+    author: "Osman Kaya",
+    role: "Gıda Kritik",
+    location: "Antalya",
     avatar: "/images/testimonial-3.jpg",
-    stars: 4
+    stars: 5,
+    date: "Kasım 2023"
+  },
+  {
+    id: 4,
+    quote: "Kabune pilavının o efsanevi hikayesi kadar lezzetli! 'GIBUNE'dan 'KABUNE'ya uzanan bu miras, her lokmada hissediliyor. Aile olarak düzenli ziyaret ettiğimiz tek restoran.",
+    author: "Fatma Özkan",
+    role: "Yerel Aile",
+    location: "Isparta",
+    avatar: "/images/testimonial-4.jpg",
+    stars: 5,
+    date: "Şubat 2024"
   }
 ];
 
@@ -259,13 +360,15 @@ const Testimonials = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 8000);
+    }, 6000);
     
     return () => clearInterval(interval);
   }, []);
   
   return (
     <SectionContainer ref={ref}>
+      <BackgroundPattern />
+      
       <SectionHeader>
         <SectionTitle
           initial={{ opacity: 0, y: 20 }}
@@ -274,6 +377,14 @@ const Testimonials = () => {
         >
           Misafirlerimizden
         </SectionTitle>
+        <SectionSubtitle
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          172 yıldır aynı lezzetle ağırladığımız değerli misafirlerimizin 
+          deneyimleri ve anıları.
+        </SectionSubtitle>
       </SectionHeader>
       
       <SliderContainer
@@ -294,6 +405,7 @@ const Testimonials = () => {
             {testimonials.map((testimonial) => (
               <TestimonialSlide key={testimonial.id}>
                 <TestimonialCard>
+                  <QuoteMarkContainer>&ldquo;</QuoteMarkContainer>
                   <TestimonialContent>
                     <TestimonialStars>
                       {[...Array(testimonial.stars)].map((_, i) => (
@@ -314,7 +426,16 @@ const Testimonials = () => {
                       </TestimonialImageContainer>
                       <TestimonialAuthor>
                         <TestimonialName>{testimonial.author}</TestimonialName>
-                        <TestimonialRole>{testimonial.role}</TestimonialRole>
+                        <TestimonialInfo>
+                          <TestimonialRole>
+                            <FiMapPin size={14} />
+                            {testimonial.role} • {testimonial.location}
+                          </TestimonialRole>
+                          <TestimonialDate>
+                            <FiCalendar size={14} />
+                            {testimonial.date}
+                          </TestimonialDate>
+                        </TestimonialInfo>
                       </TestimonialAuthor>
                     </TestimonialFooter>
                   </TestimonialContent>

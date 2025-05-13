@@ -79,10 +79,33 @@ const HeroTitle = styled(motion.h1)`
 const HeroSubtitle = styled(motion.p)`
   font-family: ${theme.typography.fontFamily.accent};
   font-size: ${theme.typography.fontSize.lg};
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   
   ${theme.media.md} {
     font-size: ${theme.typography.fontSize.xl};
+  }
+`;
+
+const HeroYear = styled(motion.div)`
+  font-family: ${theme.typography.fontFamily.accent};
+  font-size: ${theme.typography.fontSize['3xl']};
+  color: ${theme.colors.primary.yellow};
+  font-weight: ${theme.typography.fontWeight.bold};
+  margin-bottom: 0.5rem;
+  letter-spacing: 2px;
+`;
+
+const HeroDescription = styled(motion.p)`
+  font-family: ${theme.typography.fontFamily.body};
+  font-size: ${theme.typography.fontSize.base};
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  opacity: 0.9;
+  
+  ${theme.media.md} {
+    font-size: ${theme.typography.fontSize.lg};
   }
 `;
 
@@ -193,19 +216,22 @@ const Hero = () => {
   
   return (
     <HeroContainer>
-      {/* Video arka planı (opsiyonel, yoksa görsel kullanılabilir) */}
-      {/* <VideoBackground autoPlay muted loop playsInline>
-        <source src="/videos/hero-background.mp4" type="video/mp4" />
-      </VideoBackground> */}
-      
       {/* Görsel arka plan */}
       <ImageBackground />
       
       <ContentWrapper>
+        <HeroYear
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+        >
+          1851
+        </HeroYear>
+        
         <HeroTitle
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
         >
           Ateşin ve Lezzetin Buluştuğu Yer
         </HeroTitle>
@@ -213,15 +239,23 @@ const Hero = () => {
         <HeroSubtitle
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
         >
-          1851den Beri, Nesilden Nesile Aktarılan Lezzet
+          İki Asır Süren Lezzet Geleneği
         </HeroSubtitle>
+        
+        <HeroDescription
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.7 }}
+        >
+          Hafız Dedenin 1851de başlattığı bu mübarek yolculuk, Ispartanın en köklü kebapçısında bugün de devam ediyor. Kuşaktan kuşağa aktarılan gizli tarifler ve el sanatı ustalığıyla...
+        </HeroDescription>
         
         <HeroButtons
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8, delay: 0.9 }}
         >
           <Link href="/menu" passHref>
             <PrimaryButton

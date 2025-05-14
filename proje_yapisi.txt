@@ -22,8 +22,13 @@
 ./src/app/components/about/Timeline.js
 ./src/app/components/contact/ContactPage.js
 ./src/app/components/gallery/GalleryPage.js
+./src/app/components/home/CurrentOwnerSpeech.js
 ./src/app/components/home/FeaturedDishes.js
+./src/app/components/home/Heritage.js
 ./src/app/components/home/Hero.js
+./src/app/components/home/KabunePilafStory.js
+./src/app/components/home/LegacyIntro.js
+./src/app/components/home/OvenKebabStory.js
 ./src/app/components/home/ReservationCTA.js
 ./src/app/components/home/StoryPreview.js
 ./src/app/components/home/Testimonials.js

@@ -1,16 +1,15 @@
 "use client"
 
 import React, { useState, useEffect, useMemo } from 'react';
-import styled, { ThemeProvider } from 'styled-components'; // ThemeProvider eklendi
+import styled, { ThemeProvider } from 'styled-components';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { theme as importedThemeFile } from '../../styles/theme'; // Varsayılan theme dosyanız
+import { theme as importedThemeFile } from '../../styles/theme';
 import Image from 'next/image';
-import { FiQuote, FiAward, FiHeart, FiTrendingUp, FiUsers } from 'react-icons/fi';
+import { FiAward, FiHeart, FiTrendingUp, FiUsers, FiMessageSquare } from 'react-icons/fi';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 // --- START: Theme Handling ---
-// Bu kısım, importedThemeFile'ın undefined veya eksik olması durumunda
-// styled-components'in hata vermesini engellemek için eklendi.
 const fallbackTheme = {
   colors: {
     background: { main: '#ffffff', alt: '#f8f9fa' },
@@ -45,7 +44,7 @@ const fallbackTheme = {
   },
 };
 
-// Deep merge utility (basit versiyon)
+// Deep merge utility
 function deepMerge(target, source) {
   const output = { ...target };
   if (isObject(target) && isObject(source)) {
@@ -65,15 +64,10 @@ function isObject(item) {
   return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
-// Nihai tema objesi: importedThemeFile, fallbackTheme ile birleştirilir.
-// Bu, styled-components tanımları yapılmadan ÖNCE olmalı.
 const theme = deepMerge(fallbackTheme, importedThemeFile || {});
 // --- END: Theme Handling ---
 
-
 // --- START: Styled Components Definitions ---
-// Bu tanımlar YUKARIDAKİ `theme` objesini `props.theme` üzerinden kullanır.
-// BU KISIMDA DEĞİŞİKLİK YOK, `props.theme` KULLANIMI DEVAM EDİYOR.
 const SectionContainer = styled.section`
   padding: 5rem 1rem;
   background: linear-gradient(135deg, 
@@ -153,12 +147,12 @@ const OwnerSection = styled(motion.div)`
 
 const OwnerFrame = styled.div`
   position: relative;
-  width: 300px;
-  height: 380px;
+  width: 280px;
+  height: 500px;
   
   ${props => props.theme.media.md} {
     width: 350px;
-    height: 420px;
+    height: 620px;
   }
 `;
 
@@ -169,6 +163,10 @@ const OwnerImageWrapper = styled.div`
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  
+  ${props => props.theme.media.md} {
+    height: 85%;
+  }
   
   &:before {
     content: '';
@@ -201,39 +199,74 @@ const OwnerImageWrapper = styled.div`
 const OwnerNameCard = styled(motion.div)`
   position: absolute;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 95%;
+  left: 0;
+  right: 0;
   background: linear-gradient(135deg, 
     ${props => props.theme.colors.primary.red} 0%, 
     ${props => props.theme.colors.primary.orange} 100%
   );
-  padding: 1.5rem;
-  border-radius: 12px;
+  padding: 0.75rem 0.5rem;
+  border-radius: 0 0 16px 16px;
   text-align: center;
   box-shadow: 0 8px 25px rgba(200, 44, 27, 0.3);
+  
+  ${props => props.theme.media.xs} {
+    padding: 1rem;
+  }
+  
+  ${props => props.theme.media.md} {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: 95%;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
 `;
 
 const OwnerName = styled.h3`
   font-family: ${props => props.theme.typography.fontFamily.heading};
   font-weight: ${props => props.theme.typography.fontWeight.bold};
-  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-size: ${props => props.theme.typography.fontSize.base};
   color: ${props => props.theme.colors.text.light};
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
+  
+  ${props => props.theme.media.xs} {
+    font-size: ${props => props.theme.typography.fontSize.lg};
+    margin-bottom: 0.5rem;
+  }
+  
+  ${props => props.theme.media.md} {
+    font-size: ${props => props.theme.typography.fontSize.xl};
+  }
 `;
 
 const OwnerTitle = styled.p`
   font-family: ${props => props.theme.typography.fontFamily.body};
-  font-size: ${props => props.theme.typography.fontSize.base};
+  font-size: ${props => props.theme.typography.fontSize.xs};
   color: ${props => props.theme.colors.secondary.offwhite};
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.125rem;
+  
+  ${props => props.theme.media.xs} {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+    margin-bottom: 0.25rem;
+  }
+  
+  ${props => props.theme.media.md} {
+    font-size: ${props => props.theme.typography.fontSize.base};
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const OwnerYears = styled.p`
   font-family: ${props => props.theme.typography.fontFamily.accent};
-  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-size: ${props => props.theme.typography.fontSize.xs};
   color: ${props => props.theme.colors.secondary.offwhite};
   opacity: 0.9;
+  
+  ${props => props.theme.media.xs} {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+  }
 `;
 
 const SpeechContainer = styled.div`
@@ -371,8 +404,8 @@ const ExperienceLabel = styled.p`
 `;
 // --- END: Styled Components Definitions ---
 
-
 const CurrentOwnerSpeech = () => {
+  const { t, currentLanguage } = useLanguage();
   const [currentParagraphIndex, setCurrentParagraphIndex] = useState(0);
   const [displayedChars, setDisplayedChars] = useState(0);
   const [isTypingComplete, setIsTypingComplete] = useState(false);
@@ -381,26 +414,15 @@ const CurrentOwnerSpeech = () => {
     threshold: 0.1,
     triggerOnce: true
   });
-
-  useEffect(() => {
-    if (typeof importedThemeFile === 'undefined' || Object.keys(importedThemeFile).length === 0) {
-      console.warn(
-        "CurrentOwnerSpeech: The `theme` object from '../../styles/theme' seems to be empty or undefined. " +
-        "Falling back to default theme values. Styles may not appear as expected. " +
-        "Please check your theme export from '../../styles/theme.js'."
-      );
-    }
-    if (typeof FiQuote !== 'function' && typeof FiQuote !== 'object') { 
-      console.error("CurrentOwnerSpeech: FiQuote icon from react-icons is undefined. Check react-icons installation and import.");
-    }
-  }, []);
-
-  const speechParagraphs = useMemo(() => [
-    "Hüseyin Açıkalın olarak, 1851'den beri süren bu mukaddes geleneğin dördüncü kuşak temsilcisiyim. Büyükbabam Hafız Dede'nin kurduğu bu yolda yürümek, bana hem büyük bir gurur hem de büyük bir sorumluluk veriyor.",
-    "Çocukluğumdan beri bu mutfağın kokularıyla büyüdüm. Babam Kadir Açıkalın'dan öğrendiğim <QuoteHighlight>her tarif, her pişirme tekniği</QuoteHighlight>, nesiller boyu süren bir hikayenin parçası. Bu miras sadece bir meslek değil, bir yaşam felsefesi.",
-    "Günümüzde teknoloji ve modernleşmeyle birlikte, eski usullerle modern hijyen standartlarını harmanlıyoruz. <QuoteHighlight>Beş yıldızlı mutfağımızda</QuoteHighlight>, dedelerimizin tariflerini en kaliteli malzemelerle buluşturuyoruz.",
-    "Her müşterimize kapımızı açtığımızda, sanki evimize misafir gelmişçesine karşılıyoruz. Çünkü bizim için kebap yapmak sadece iş değil, bir sanat ve sevgi gösterisidir."
+  
+  const createSpeechParagraphs = useMemo(() => (t) => [
+    t('home.owner_speech1'),
+    t('home.owner_speech2').replace(/her tarif, her pişirme tekniği/g, '<QuoteHighlight>her tarif, her pişirme tekniği</QuoteHighlight>'),
+    t('home.owner_speech3').replace(/Beş yıldızlı mutfağımızda/g, '<QuoteHighlight>Beş yıldızlı mutfağımızda</QuoteHighlight>'),
+    t('home.owner_speech4')
   ], []);
+  
+  const speechParagraphs = useMemo(() => createSpeechParagraphs(t), [t, createSpeechParagraphs]);
 
   const parseParagraph = (paragraphText) => {
     const parts = [];
@@ -484,25 +506,15 @@ const CurrentOwnerSpeech = () => {
     return elements;
   };
 
-  const DefaultIcon = () => <span>?</span>; 
-  const SafeFiQuote = (typeof FiQuote === 'function' || typeof FiQuote === 'object') ? FiQuote : DefaultIcon;
-  const SafeFiAward = (typeof FiAward === 'function' || typeof FiAward === 'object') ? FiAward : DefaultIcon;
-  const SafeFiUsers = (typeof FiUsers === 'function' || typeof FiUsers === 'object') ? FiUsers : DefaultIcon;
-  const SafeFiTrendingUp = (typeof FiTrendingUp === 'function' || typeof FiTrendingUp === 'object') ? FiTrendingUp : DefaultIcon;
-  const SafeFiHeart = (typeof FiHeart === 'function' || typeof FiHeart === 'object') ? FiHeart : DefaultIcon;
-
-  const experienceData = [
-    { icon: <SafeFiAward />, number: "174", label: "Yıl Tecrübe" },
-    { icon: <SafeFiUsers />, number: "4", label: "Kuşak Gelenek" },
-    { icon: <SafeFiTrendingUp />, number: "5", label: "Yıldızlı Mutfak" },
-    { icon: <SafeFiHeart />, number: "1851", label: "Kuruluş Yılı" }
-  ];
+  const createExperienceData = useMemo(() => (t) => [
+    { icon: <FiAward />, number: "174", label: t('home.exp_years') },
+    { icon: <FiUsers />, number: "4", label: t('home.exp_generations') },
+    { icon: <FiTrendingUp />, number: "5", label: t('home.exp_star') },
+    { icon: <FiHeart />, number: "1851", label: t('home.exp_founded') }
+  ], []);
   
   return (
-    // ThemeProvider ile tüm component'i sarmalıyoruz.
-    // `theme` prop'u olarak yukarıda tanımladığımız `theme` sabitini veriyoruz.
-    // Bu, içindeki tüm styled component'lerin `props.theme` üzerinden bu temaya erişmesini sağlar.
-    <ThemeProvider theme={theme}> {/* DEĞİŞİKLİK BURADA */}
+    <ThemeProvider theme={theme}>
       <SectionContainer ref={ref}> 
         <BackgroundPattern />
         <BackgroundQuote>"</BackgroundQuote>
@@ -521,7 +533,7 @@ const CurrentOwnerSpeech = () => {
               <OwnerFrame>
                 <OwnerImageWrapper>
                   <Image
-                    src="/images/huseyin-acikalin.jpg" 
+                    src="/images/huseyin_acikalin.png" 
                     alt="Hüseyin Açıkalın"
                     fill
                     sizes="(max-width: 768px) 300px, 350px" 
@@ -535,8 +547,12 @@ const CurrentOwnerSpeech = () => {
                   transition={{ duration: 0.5, delay: 0.8 }}
                 >
                   <OwnerName>Hüseyin Açıkalın</OwnerName>
-                  <OwnerTitle>4. Kuşak Temsilcisi</OwnerTitle>
-                  <OwnerYears>1985 - Günümüz</OwnerYears>
+                  <OwnerTitle>{currentLanguage === 'tr' ? '4. Kuşak Temsilcisi' : 
+                                currentLanguage === 'en' ? '4th Generation Representative' : 
+                                '4. Generation Vertreter'}</OwnerTitle>
+                  <OwnerYears>{currentLanguage === 'tr' ? '1985 - Günümüz' : 
+                             currentLanguage === 'en' ? '1985 - Present' : 
+                             '1985 - Gegenwart'}</OwnerYears>
                 </OwnerNameCard>
               </OwnerFrame>
             </OwnerSection>
@@ -548,14 +564,14 @@ const CurrentOwnerSpeech = () => {
                   animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                 >
-                  Geleneğin Devam Ettireni
+                  {t('home.owner_title')}
                 </SectionTitle>
                 <SectionSubtitle
                   initial={{ opacity: 0, y: 20 }}
                   animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.6, delay: 0.6 }}
                 >
-                  "Dedelerimizin mirasını yarının nesillere taşıyoruz"
+                  {t('home.owner_subtitle')}
                 </SectionSubtitle>
               </SpeechHeader>
               
@@ -575,7 +591,7 @@ const CurrentOwnerSpeech = () => {
                     ease: "easeInOut"
                   }}
                 >
-                  <SafeFiQuote />
+                  <FiMessageSquare />
                 </QuoteIcon>
                 
                 <QuoteText>
@@ -618,7 +634,7 @@ const CurrentOwnerSpeech = () => {
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.8, delay: (currentParagraphIndex >= speechParagraphs.length ? 0.5 : 1.4) }} 
               >
-                {experienceData.map((item, index) => (
+                {createExperienceData(t).map((item, index) => (
                   <ExperienceCard
                     key={index}
                     initial={{ scale: 0.8, opacity: 0 }}
@@ -639,7 +655,7 @@ const CurrentOwnerSpeech = () => {
           </SpeechWrapper>
         </ContentContainer>
       </SectionContainer>
-    </ThemeProvider> // DEĞİŞİKLİK BURADA (kapanış etiketi)
+    </ThemeProvider>
   );
 };
 
